@@ -14,7 +14,7 @@ write_enable, read_enable, write_data, read_data);
 	wire [10:0] add0, add1, add2, add3;	//Addresses used to read individual words
 	integer i;
 	 
-	//Round down the address to nearest word as word alignment is not gaurenteed
+	//Round down the address to nearest word as word alignment might not gaurenteed
 	assign add0 = (address & 11'hffc)+ 11'd0;
 	assign add1 = (address & 11'hffc)+ 11'd1;
 	assign add2 = (address & 11'hffc)+ 11'd2;

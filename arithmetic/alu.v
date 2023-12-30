@@ -2,10 +2,10 @@ module alu(A, B, ALU_Result, ALUOpCode, Zero);
  
 	
 	input 		[31:0] 	A, B; 					// Operands
-	input 		[3:0]		ALUOpCode;				// Operation
+	input 		[3:0]	ALUOpCode;				// Operation
 	
-	output reg	[31:0] 	ALU_Result; 			// Result
-	output reg 				Zero; 					// Zero flag
+	output reg	[31:0] 	ALU_Result; 				// Result
+	output reg 		Zero; 					// Zero flag
 
 	always @ (ALUOpCode or A or B)
 	begin

@@ -13,12 +13,13 @@ module register_file(Clock, Reset_n, Read_addr1, Read_addr2, Write_addr, Write_E
   integer i;
  
   // Register write
-    always @(posedge Clock) begin //Negative Edge
+    always @(posedge Clock) begin //Posedge for writing Edge
 	 
         if(Reset_n)  
         begin 
             for( i = 0; i < 32; i = i + 1)
                 registers[i] = 0;
+	registers[2] = 2047; //Stack pointer sp
         end
     
         else if (Write_En)

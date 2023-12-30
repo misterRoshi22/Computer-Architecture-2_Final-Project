@@ -4,22 +4,29 @@ module cpu(clk, reset_n, sepc, scause);
 	
 	wire VCC, GND;
 
-	//TODO
 	wire flush_IF_ID, flush_ID_EXE, flush_EXE_MEM, flush_MEM_WB;
 	wire ID_EXE_REG_Write, EXE_MEM_REG_Write, MEM_WB_REG_write;
 
-	//HAZARD -> IF
+	//HAZARD -> CPU
 	wire pc_write_IF;
-	
-	//HAZARD -> IF_ID_REG
 	wire IF_ID_REG_Write_HZRD;
-	
-	//HAZARD -> ID
 	wire control_MUX_select_ID;
+	
+	//CPU -> Forward
+	wire [4:0] EXE_MEM_rd, MEM_WB_rd;
+	wire [4:0] ID_EXE_rs1, ID_EXE_rs2;
+	wire EXE_MEM_RegWrite, MEM_WB_RegWrite;
+	wire [6:0] OPCODE_FORWARD;
 	
 	//FORWARD ->EXE
 	wire [1:0] ForwardA_EXE, ForwardB_EXE;
-
+	
+	//EXCEPTION -> CPU
+	wire exception;
+	output [14:0] sepc;
+	output [63:0] scause;
+	
+	
 	//IF -> IF_ID_REG
 	wire [14:0] pc_IF_ID;
 	wire [31:0] instruction_IF_ID;
@@ -58,15 +65,14 @@ module cpu(clk, reset_n, sepc, scause);
 	
 	//ID_EXE_REG -> FORWARD
 	wire [4:0] rs1_FORWARD, rs2_FORWARD;
-	wire [6:0] OPCODE_FORWARD;
 	
 	//EXE -> EXE_MEM_REG
 	wire [3:0] MemRead_EXE_MEM, MemWrite_EXE_MEM;
-   wire [1:0] MemtoReg_EXE_MEM;
+   	wire [1:0] MemtoReg_EXE_MEM;
 	wire RegWrite_EXE_MEM;
-   wire [4:0] rd_EXE_MEM;
+   	wire [4:0] rd_EXE_MEM;
 	wire [14:0] pc_EXE_MEM;
-   wire [31:0] ALU_Result_EXE_MEM;
+	wire [31:0] ALU_Result_EXE_MEM;
 	wire [31:0] write_data_EXE_MEM;
 	
 	//EXE_MEM_REG -> EXE
@@ -86,8 +92,8 @@ module cpu(clk, reset_n, sepc, scause);
 	wire RegWrite_MEM_WB;
 	wire [4:0] write_reg_MEM_WB;
 	
-	//MEM_WB_REG -> EXE
-	wire [31:0] ALU_Result_MEM_WB_EXE;
+	//WB -> EXE
+	wire [31:0] Write_Data_WB_EXE;
 	
 	//MEM_WB_REG -> WB
 	wire [31:0] read_data_WB, ALU_Result_WB, pc_WB;
@@ -100,16 +106,14 @@ module cpu(clk, reset_n, sepc, scause);
 	wire [4:0] write_reg_ID;
 	wire [31:0] write_data_ID;
 	
-	//EXCEPTION -> CPU
-	wire exception;
-	output [14:0] sepc;
-	output [31:0] scause;
+
 	
-	exception_handler exception_handler(pc_EXE, OPCODE_FORWARD, branch_address_IF, 
+	exception_handler exception_handler(pc_EXE, OPCODE_FORWARD, branch_address_IF, branch_IF,
 	MemRead_EXE, MemWrite_EXE, ALUOp_EXE, exception, sepc, scause);
 
-	forwarding_unit forward(rd_MEM, write_reg_WB, rs1_FORWARD, rs2_FORWARD,
-	RegWrite_MEM, RegWrite_WB, OPCODE_FORWARD, ForwardA_EXE, ForwardB_EXE);
+	forwarding_unit forward(EXE_MEM_rd, MEM_WB_rd, rs1_FORWARD, rs2_FORWARD,
+	EXE_MEM_RegWrite, MEM_WB_RegWrite, OPCODE_FORWARD, ForwardA_EXE, ForwardB_EXE);
+	
 		
 	hazard_detection_unit hazard(MemRead_EXE[0], rs1_ID, rs2_ID, rd_EXE, OPCODE_ID,  
 	control_MUX_select_ID, IF_ID_REG_Write_HZRD, pc_write_IF );
@@ -162,7 +166,7 @@ module cpu(clk, reset_n, sepc, scause);
 	MemtoReg_EXE, RegWrite_EXE,
 	rd_EXE, pc_EXE,
 	ForwardA_EXE, ForwardB_EXE,
-	ALU_Result_MEM_WB_EXE, ALU_Result_EX_MEM_EXE,
+	Write_Data_WB_EXE, ALU_Result_EX_MEM_EXE,
 	MemRead_EXE_MEM, MemWrite_EXE_MEM,
    MemtoReg_EXE_MEM, RegWrite_EXE_MEM,
    rd_EXE_MEM, pc_EXE_MEM,
@@ -207,28 +211,27 @@ module cpu(clk, reset_n, sepc, scause);
 	RegWrite_ID, write_reg_ID, write_data_ID
 	);
 		
-	assign jal_address_IF = branch_address_IF;
+
 	assign VCC = 1'b1;
 	assign GND = 1'b0;
+	
+	assign jal_address_IF = branch_address_IF;
 	assign ID_EXE_REG_Write = !exception;
 	assign EXE_MEM_REG_Write = !exception;
 	assign MEM_WB_REG_Write = !exception;
-	assign IF_ID_REG_Write = !exception || IF_ID_REG_Write_HZRD;
-//	assign flush_ID_EXE = GND;
-//	assign flush_IF_ID = GND;
+	assign IF_ID_REG_Write = !exception && IF_ID_REG_Write_HZRD;
 	assign flush_EXE_MEM = GND;
 	assign flush_MEM_WB = GND;
 	
-	//DELETE JUST FOR TEST
-	//assign  pc_write_IF = VCC;
-	//assign IF_ID_REG_Write = VCC;
-	//assign control_MUX_select_ID =GND;
-//	assign ForwardA_EXE =2'b00;
-//	assign ForwardB_EXE= 2'b00;
-
-	assign ALU_Result_MEM_WB_EXE = ALU_Result_WB;
-	assign ALU_Result_EX_MEM_EXE = ALU_Result_MEM;
+	assign EXE_MEM_rd = rd_MEM;
+	assign MEM_WB_rd = write_reg_WB;
 	
+	assign EXE_MEM_RegWrite = RegWrite_MEM;
+	assign MEM_WB_RegWrite = RegWrite_WB;
+	
+	assign ALU_Result_EX_MEM_EXE = ALU_Result_MEM;
+	assign Write_Data_WB_EXE = MemtoReg_WB[0] ?  read_data_WB: ALU_Result_WB ;
 
+	
 
 endmodule //cpu

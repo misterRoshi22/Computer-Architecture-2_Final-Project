@@ -1,7 +1,8 @@
-module exception_handler(pc, OPCODE, branch_address, 
+module exception_handler(pc, OPCODE, branch_address, Branch,
 MemRead_EXE, MemWrite_EXE, ALUOp_EXE, exception, sepc, scause);
 
 	input [14:0] pc;
+	input Branch;
 	input [6:0] OPCODE;
 	input [14:0] branch_address;
 	input [3:0] MemRead_EXE, MemWrite_EXE;
@@ -38,19 +39,12 @@ MemRead_EXE, MemWrite_EXE, ALUOp_EXE, exception, sepc, scause);
 			EXCEPTION <= 1;
 		end
 		
-		else if(branch_address > 15'h2000) begin
+		else if(branch_address > 15'h2000 && Branch) begin
 			SEPC <= pc;
 			SCAUSE <= {3'b011, 46'b0, branch_address};
 			EXCEPTION <= 1;
 		end
 		
-//		else if(OPCODE != 7'h33 && OPCODE != 7'h13 && OPCODE != 7'h1b && OPCODE != 7'h63
-//			&& OPCODE != 7'h6F && OPCODE != 7'h67 && OPCODE != 7'h03 && OPCODE != 7'h38
-//			&& OPCODE != 7'h23) begin
-//			SEPC <= pc;
-//			SCAUSE <= {3'b100, 54'b0, OPCODE};
-//			EXCEPTION <= 1;
-//		end
 	end
 	
 	assign scause = SCAUSE;

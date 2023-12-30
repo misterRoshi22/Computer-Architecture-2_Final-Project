@@ -9,8 +9,8 @@ MemtoReg_WB, RegWrite_WB, write_reg_WB, pc_WB
 	input flush, MEM_WB_REG_Write;
 	
 	//Sent to WB stage
-	input	[31:0] read_data_MEM;
-	input	[31:0] ALU_Result_MEM;
+	input [31:0] read_data_MEM;
+	input [31:0] ALU_Result_MEM;
 	input [1:0] MemtoReg_MEM;
 	input RegWrite_MEM;
 	input [4:0] write_reg_MEM;
@@ -35,7 +35,7 @@ MemtoReg_WB, RegWrite_WB, write_reg_WB, pc_WB
             pc_WB <= 0;
         end 
 		  
-		  else if (MEM_WB_REG_Write) begin
+	else if (MEM_WB_REG_Write) begin
             read_data_WB <= read_data_MEM;
             ALU_Result_WB <= ALU_Result_MEM;
             MemtoReg_WB <= MemtoReg_MEM;

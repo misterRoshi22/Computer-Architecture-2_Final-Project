@@ -87,24 +87,7 @@ Each stage is interconnected via registers, facilitating smooth information flow
 ## Block Diagram
 ![top level block diagram](https://github.com/misterRoshi22/RISC-V-Processor/assets/109997866/29609d61-c64a-4956-8bff-ea2d047e7716)
 
-## How to Use
-- **Installation:** Describe how to set up and run the processor.
-- **Usage:** Provide examples or steps to assemble code and execute programs on the processor.
 
-## Limitations
-Mention any limitations or constraints of this limited version processor, such as the inability to support specific instruction types or functionalities.
-
-## Future Improvements
-Discuss potential enhancements or features that could be added to extend the functionality of the processor in future iterations.
-
-## Contributors
-Acknowledge the contributors involved in the development of this limited RISC-V processor.
-
-## License
-Specify the license under which this processor is distributed.
-
-## References
-Cite any references, textbooks, or resources used in the development of the processor.
 
 
 

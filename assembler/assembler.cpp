@@ -18,6 +18,7 @@ typedef unsigned long long ull;
 const int oo = 1000000010;
 const int N = 200010;
 
+
 class OF3F7  {
 public:
     int opcode;
@@ -179,6 +180,35 @@ int register_number(string r) {
 
 }
 string to_binary(int n, int bits) {
+
+    if(n < 0) {
+        n = -n;
+        string s = "";
+        while(n) {
+            s += (n%2) + '0';
+            n /= 2;
+        }
+        while(s.size() < bits) s += '0';
+        reverse(s.begin(), s.end());
+        for(int i = 0; i < s.size(); i++) {
+            if(s[i] == '0') s[i] = '1';
+            else s[i] = '0';
+        }
+        int carry = 1;
+        for(int i = s.size() - 1; i >= 0; i--) {
+            if(s[i] == '0' && carry == 1) {
+                s[i] = '1';
+                carry = 0;
+            }
+            else if(s[i] == '1' && carry == 1) {
+                s[i] = '0';
+                carry = 1;
+            }
+        }
+        return s;
+    }
+
+
     string s = "";
     while(n) {
         s += (n%2) + '0';
@@ -211,7 +241,7 @@ void print_IM(int start) {
     cout << "module instruction_memory(clk, address, read_data);\n" << endl;
 
     cout << "input clk;\n input [14:0] address;\n output reg [31:0] read_data;\n" << endl;
-    cout << "reg [7:0] memory[0:2047];\n";
+    cout << "reg [7:0] memory[0:32767];\n";
     cout << "initial begin\n" << endl;
 
 
@@ -515,6 +545,44 @@ void J_type(string instruction) { // jal r1 1000
     string hex = bin_to_hex(binary);
     instructions.push_back(hex);
 }
+void jalr_type(string instruction) {
+    vector<string> tokens;
+    //v[0] = mnemonic, v[1] = rd, v[2] = imm, v[3] = rs1
+    int i = 0;
+    while(i < instruction.size()) {
+        string temp = "";
+        while(i < instruction.size() && instruction[i] != ' ') {
+            temp += instruction[i];
+            i++;
+        }
+        tokens.push_back(temp);
+        i++;
+    }
+    //same format as I type
+
+    //get the opcode, funct3 and funct7
+    OF3F7 of3f7 = opcode_funct3_funct7[tokens[0]];
+    int opcode = of3f7.opcode;
+    int funct3 = of3f7.funct3;
+    int rd = register_number(tokens[1]);
+    int rs1 = register_number(tokens[3]);
+    int imm = stoi(tokens[2]);
+
+    //get the binary representation of the instruction
+    string binary = "";
+    //imm1 = imm[11:0]
+    string imm_binary = to_binary(imm,12);
+    string imm1 = imm_binary.substr(0,12);
+    binary += imm1;
+    binary += to_binary(rs1,5);
+    binary += to_binary(funct3,3);
+    binary += to_binary(rd,5);
+    binary += to_binary(opcode,7);
+
+    //convert binary to hex
+    string hex = bin_to_hex(binary);
+    instructions.push_back(hex);
+}
 
 
 string clean(string s) {
@@ -529,10 +597,12 @@ string clean(string s) {
 
 
 void solve(){
+
     fill_mnemonics();
     fill_OF3F7();
     string x;
 
+   // cout << to_binary(-12,13)   << endl;
     //read lines
     while(getline(cin,x)) {
         v.push_back(clean(x));
@@ -547,7 +617,8 @@ void solve(){
             j++;
         }
         if(mnemonics[m] == 'R') R_type(v[i]);
-        else if (mnemonics[m] == 'I' && m != "lb" && m!= "lw") I_type(v[i]);
+        else if (mnemonics[m] == 'I' && m != "lb" && m!= "lw" && m!= "jalr") I_type(v[i]);
+        else if (m == "jalr") jalr_type(v[i]);
         else if (m == "lb" || m == "lw") L_type(v[i]);
         else if (mnemonics[m] == 'U') U_type(v[i]);
         else if (mnemonics[m] == 'S') S_type(v[i]);
@@ -571,6 +642,7 @@ void solve(){
 
 
 int main(void) {
+
     FastIO;
 #ifndef ONLINE_JUDGE
     freopen("input.text.txt", "r", stdin);
@@ -583,4 +655,3 @@ int main(void) {
     }
     return 0;
 }
-

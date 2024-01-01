@@ -41,15 +41,14 @@ With a focus on simplicity and effectiveness, this processor design aims to demo
 
 
 - **Pipeline:** Incorporates a basic pipeline structure, outlining the stages and their functionalities.
-- 
 The 5-stage pipelined RISC-V processor is designed with the following sequential stages:
 
-### 1. Instruction Fetch (IF) Stage:
+# 1. Instruction Fetch (IF) Stage:
 - Fetches instructions from memory based on the program counter (PC).
 - Determines PC values using control signals and the PC MUX.
 - Writes fetched instructions onto the IF/ID Register at the negative edge.
 
-### 2. Instruction Decode (ID) Stage:
+# 2. Instruction Decode (ID) Stage:
 - Contains seven modules, including the register file and immediate generator.
 - Uses control signals from OpCode and funct-3 to determine further execution controls.
 - Handles branching through a comparator and branch-related modules.

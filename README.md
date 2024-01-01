@@ -37,3 +37,14 @@ Specify the license under which this processor is distributed.
 
 ## References
 Cite any references, textbooks, or resources used in the development of the processor.
+
+| Title                 | Description                                      |
+|-----------------------|--------------------------------------------------|
+| Project Name          | 5-Stage Pipelined RISC-V Processor               |
+| Authors               | Mahmoud Abu-Qtiesh, Mohammad AbdelAziz            |
+| Department            | Computer Engineering                             |
+| University            | Princess Sumaya University for Technology         |
+| Faculty               | King Abdullah II Faculty of Engineering          |
+| Project Type          | Final Project                                    |
+| Repository Link       | [Link to Repository](https://github.com/yourusername/yourrepository) |
+

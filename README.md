@@ -7,7 +7,30 @@ The processor is designed to execute a limited set of instructions and perform s
 
 ## Features
 - **Instruction Set:** Supports a subset of RISC-V instructions.
-  - Specify the supported instructions and functionalities.
+| No. | NAME               | FORMAT | MNEMONIC  | Description (in Verilog)                          | OPCODE/FUNCT3/FUNCT7 or IMM in HEX |
+|-----|--------------------|--------|-----------|---------------------------------------------------|-------------------------------------|
+| 1   | Add                | R      | add       | R[rd] = R[rs1] + R[rs2]                           | 33/6/00                             |
+| 2   | Add Immediate      | I      | addi      | R[rd] = R[rs1] + imm                              | 1B/0                                |
+| 3   | And                | R      | and       | R[rd] = R[rs1] & R[rs2]                           | 33/5/00                             |
+| 4   | And Immediate      | I      | andi      | R[rd] = R[rs1] & imm                              | 13/6                                |
+| 5   | Branch On Equal    | SB     | beq       | PC=PC+{imm, 1b'0} if(R[rs1]==R[rs2])              | 63/1                                |
+| 6   | Branch On Not Equal| SB     | bne       | PC=PC+{imm, 1b'0} if(R[rs1]!=R[rs2])              | 63/0                                |
+| 7   | Jump And Link      | UJ     | jal       | R[rd]=PC+4; PC=PC+{imm, 1b'0}                     | 6F                                  |
+| 8   | Jump And Link Reg  | I      | jalr      | R[rd]=PC+4; PC= R[rs1] + imm                      | 67/0                                |
+| 9   | Load Byte (1)      | I      | lb        | R[rd]={24’bM[](7), M[R[rs1]+imm](7:0)}            | 03/2                                |
+| 10  | Load Upper Imm.    | U      | lui       | R[rd] = {imm, 12’b0}                              | 38                                  |
+| 11  | Load Word          | I      | lw        | R[rd] = {M[R[rs1]+imm](31:0)}                     | 03/0                                |
+| 12  | xor                | R      | xor       | R[rd] = R[rs1] ^ R[rs2]                           | 33/7/00                             |
+| 13  | Or                 | R      | or        | R[rd] = R[rs1] | R[rs2]                           | 33/3/00                             |
+| 14  | Or Immediate       | I      | ori       | R[rd] = R[rs1] | imm                              | 13/7                                |
+| 15  | Set Less Than      | R      | slt       | R[rd] = (R[rs1] < R[rs2]) ? 1 : 0                 | 33/4/00                             |
+| 16  | Shift Left         | R      | sll       | R[rd] = R[rs1] << R[rs2]                          | 33/2/00                             |
+| 17  | Shift Right        | R      | srl       | R[rd] = R[rs1] >> R[rs2]                          | 33/0/00                             |
+| 18  | Store Byte         | S      | sb        | M[R[rs1]+imm](7:0) = R[rs2](7:0)                  | 23/2                                |
+| 19  | Store Word         | S      | sw        | M[R[rs1]+imm](31:0) = R[rs2](31:0)               | 23/0                                |
+| 20  | Subtract           | R      | sub       | R[rd] = R[rs1] - R[rs2]                           | 33/1/20                             |
+
+
 - **Pipeline:** Incorporates a basic pipeline structure, outlining the stages and their functionalities.
 - **Memory Access:** Provides simplified memory access and handling instructions.
 - **Control Unit:** Implements a simple control unit to manage instruction execution flow.
@@ -38,13 +61,5 @@ Specify the license under which this processor is distributed.
 ## References
 Cite any references, textbooks, or resources used in the development of the processor.
 
-| Title                 | Description                                      |
-|-----------------------|--------------------------------------------------|
-| Project Name          | 5-Stage Pipelined RISC-V Processor               |
-| Authors               | Mahmoud Abu-Qtiesh, Mohammad AbdelAziz            |
-| Department            | Computer Engineering                             |
-| University            | Princess Sumaya University for Technology         |
-| Faculty               | King Abdullah II Faculty of Engineering          |
-| Project Type          | Final Project                                    |
-| Repository Link       | [Link to Repository](https://github.com/yourusername/yourrepository) |
+
 

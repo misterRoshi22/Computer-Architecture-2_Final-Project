@@ -7,6 +7,7 @@ The processor is designed to execute a limited set of instructions and perform s
 
 ## Features
 - **Instruction Set:** Supports a subset of RISC-V instructions.
+
 | No. | NAME               | FORMAT | MNEMONIC  | Description (in Verilog)                          | OPCODE/FUNCT3/FUNCT7 or IMM in HEX |
 |-----|--------------------|--------|-----------|---------------------------------------------------|-------------------------------------|
 | 1   | Add                | R      | add       | R[rd] = R[rs1] + R[rs2]                           | 33/6/00                             |

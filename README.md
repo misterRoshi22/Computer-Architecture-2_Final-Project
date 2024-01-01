@@ -41,8 +41,7 @@ With a focus on simplicity and effectiveness, this processor design aims to demo
 
 
 - **Pipeline:** Incorporates a basic pipeline structure, outlining the stages and their functionalities.
-- ## Pipeline Structure
-
+- 
 The 5-stage pipelined RISC-V processor is designed with the following sequential stages:
 
 ### 1. Instruction Fetch (IF) Stage:

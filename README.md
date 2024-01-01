@@ -69,7 +69,8 @@ The 5-stage pipelined RISC-V processor is designed with the following sequential
 Each stage is interconnected via registers, facilitating smooth information flow and synchronization between stages. Dedicated units such as the Hazard Detection Unit and Branch Controller manage hazards and mispredictions to ensure robust functionality within the pipeline.
 
 - **ALUOp:** Provides simplified memory access and handling instructions.
-  | Operation | Description                          | Verilog Operation                |
+  
+| Operation | Description                          | Verilog Operation                |
 |-----------|--------------------------------------|----------------------------------|
 | 0         | AND                                  | ALU_Result = A & B               |
 | 1         | OR                                   | ALU_Result = A \| B              |

@@ -83,12 +83,9 @@ Each stage is interconnected via registers, facilitating smooth information flow
 | 8         | SLT - Set on Less Than               | ALU_Result = (A < B) ? 1 : 0     |
 
 
-## Supported Instructions
-- List the supported instructions and their functionalities.
-- Mention any specific peculiarities or modifications from the standard RISC-V ISA.
 
 ## Block Diagram
-Include a high-level block diagram showcasing the architecture of the processor. Highlight the main components and their connections.
+![top level block diagram](https://github.com/misterRoshi22/RISC-V-Processor/assets/109997866/29609d61-c64a-4956-8bff-ea2d047e7716)
 
 ## How to Use
 - **Installation:** Describe how to set up and run the processor.

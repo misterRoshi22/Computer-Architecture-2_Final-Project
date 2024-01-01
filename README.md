@@ -48,28 +48,39 @@ The 5-stage pipelined RISC-V processor is designed with the following sequential
 - Determines PC values using control signals and the PC MUX.
 - Writes fetched instructions onto the IF/ID Register at the negative edge.
 
-### 2. Instruction Decode (ID) Stage:
+#### 2. Instruction Decode (ID) Stage:
 - Contains seven modules, including the register file and immediate generator.
 - Uses control signals from OpCode and funct-3 to determine further execution controls.
 - Handles branching through a comparator and branch-related modules.
 
-### 3. Execute (EXE) Stage:
+#### 3. Execute (EXE) Stage:
 - Hosts the ALU (Arithmetic Logic Unit) and forwarding logic.
 - Performs arithmetic/logic operations using operands obtained from preceding stages.
 - Utilizes forwarding paths to mitigate Read-After-Write (RAW) hazards.
 
-### 4. Memory (MEM) Stage:
+#### 4. Memory (MEM) Stage:
 - Executes load/store instructions based on the address calculated in the EXE stage.
 - Performs read/write operations on memory based on control signals (MemRead/MemWrite).
 
-### 5. Write-back (WB) Stage:
+#### 5. Write-back (WB) Stage:
 - Concludes an instruction's lifecycle.
 - Uses a MUX to select data to be written into registers based on control signals (MemToReg).
 
 Each stage is interconnected via registers, facilitating smooth information flow and synchronization between stages. Dedicated units such as the Hazard Detection Unit and Branch Controller manage hazards and mispredictions to ensure robust functionality within the pipeline.
 
-- **Memory Access:** Provides simplified memory access and handling instructions.
-- **Control Unit:** Implements a simple control unit to manage instruction execution flow.
+- **ALUOp:** Provides simplified memory access and handling instructions.
+  | Operation | Description                          | Verilog Operation                |
+|-----------|--------------------------------------|----------------------------------|
+| 0         | AND                                  | ALU_Result = A & B               |
+| 1         | OR                                   | ALU_Result = A \| B              |
+| 2         | ADD                                  | ALU_Result = $signed(A) + $signed(B) |
+| 3         | XOR                                  | ALU_Result = A ^ B               |
+| 4         | SLL - Shift Left Logical             | ALU_Result = (A << B)            |
+| 5         | SRL - Shift Right Logical            | ALU_Result = (A >> B)            |
+| 6         | SUB                                  | ALU_Result = $signed(A) - $signed(B) |
+| 7         | LUI - Load Upper Immediate           | ALU_Result = B                   |
+| 8         | SLT - Set on Less Than               | ALU_Result = (A < B) ? 1 : 0     |
+
 
 ## Supported Instructions
 - List the supported instructions and their functionalities.

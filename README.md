@@ -3,7 +3,15 @@
 This RISC-V processor is a simplified implementation supporting a restricted set of instructions and functionalities. It was developed as a final project for the Computer Architecture course.
 
 ## Overview
-The processor is designed to execute a limited set of instructions and perform specific functionalities, catering to the essential aspects of a RISC-V architecture.
+
+The processor design represents a fundamental implementation adhering to the principles of the RISC-V architecture, specifically tailored to execute a constrained yet critical set of instructions. It encompasses a streamlined approach focusing on essential functionalities to achieve operational efficiency.
+
+This RISC-V processor is structured with a limited instruction set, deliberately chosen to cover fundamental arithmetic, logic, memory access, and branching operations. The primary aim is to encapsulate core functionalities while maintaining simplicity in design and execution.
+
+The processor's architecture embodies a 5-stage pipeline, allowing for sequential instruction execution through distinct stages: Instruction Fetch (IF), Instruction Decode (ID), Execute (EXE), Memory (MEM), and Write-back (WB). Each stage plays a pivotal role in processing instructions, managing data flow, and ensuring effective synchronization to enable efficient execution.
+
+With a focus on simplicity and effectiveness, this processor design aims to demonstrate the core principles of RISC-V architecture, offering a foundational understanding of essential processor functionalities and pipeline structures.
+
 
 ## Features
 - **Instruction Set:** Supports a subset of RISC-V instructions.
